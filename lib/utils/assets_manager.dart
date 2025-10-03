@@ -20,9 +20,16 @@ class AssetsManager {
   static const String vector = 'assets/images/vector_sure.png';
   static const String coverContent = 'assets/images/cover.png';
   static const String hadithCover = 'assets/images/hadith_cover.png';
+  static const String askarCover = 'assets/images/askar_content.png';
   static const String sebha = 'assets/images/sebha.png';
   static const String eveningAzkar = 'assets/images/evening_askar.png';
   static const String morningAzkar = 'assets/images/morning_azkar.png';
+  static const String azkarBeforeSleep = 'assets/images/Azkar before sleep.png';
+  static const String quranicDuas = 'assets/images/Quranic Duas.png';
+  static const String prophetsDuas = 'assets/images/Prophets’ Duas.png';
   static const String radioSound = 'assets/images/radio_sound.png';
+  static const String soundWave = 'assets/images/soundWave1.png';
+  static const String soundWave1 = 'assets/images/soundWave 11.png';
   static const String reciterSound = 'assets/images/reciters_sound.png';
+  static const String prayerBg = 'assets/images/prayer_bg.png';
 }

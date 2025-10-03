@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:islami_n/features/provider/radio_provider.dart';
 import 'package:islami_n/utils/app_colors.dart';
 import 'package:islami_n/utils/app_style.dart';
 import 'package:islami_n/utils/assets_manager.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/Reciters_model.dart';
+import '../../../providers/radio_provider.dart';
+import '../../data/Reciters_model.dart';
 
 class RecitersWidget extends StatefulWidget {
   final Reciters model;
@@ -35,12 +35,14 @@ class _RecitersWidgetState extends State<RecitersWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Consumer<RadioProvider>(
       builder: (context, RadioProvider provider, child) {
         return Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: EdgeInsets.symmetric(vertical: height * 0.01),
           child: Container(
-            height: 130,
+            height: height * 0.15,
             width: double.infinity,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -56,10 +58,10 @@ class _RecitersWidgetState extends State<RecitersWidget> {
               children: [
                 Text(
                   widget.model.name!,
-                  style: AppStyles.bold20Black,
+                  style: AppStyles.bold22Black,
                 ),
                 SizedBox(
-                  height: 25,
+                  height: height * 0.02,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -77,7 +79,7 @@ class _RecitersWidgetState extends State<RecitersWidget> {
                           size: 35,
                         )),
                     SizedBox(
-                      width: 10,
+                      width: width * 0.01,
                     ),
                     IconButton(
                         onPressed: () {
@@ -105,7 +107,7 @@ class _RecitersWidgetState extends State<RecitersWidget> {
                           size: 35,
                         )),
                     SizedBox(
-                      width: 10,
+                      width: width * 0.01,
                     )
                   ],
                 )
@@ -117,87 +119,3 @@ class _RecitersWidgetState extends State<RecitersWidget> {
     );
   }
 }
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-//
-// import '../../../../utils/app_colors.dart';
-// import '../../../../utils/app_style.dart';
-// import '../../../../utils/assets_manager.dart';
-// import '../../model/radio_model.dart';
-//
-// class RadioWidget extends StatelessWidget {
-//   final Radios model;
-//
-//   const RadioWidget({super.key, required this.model});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: Container(
-//         height: 130,
-//         width: double.infinity,
-//         decoration: BoxDecoration(
-//             borderRadius: BorderRadius.circular(20),
-//             color: AppColors.primaryDark,),
-//         child: Stack(children: [
-//           Align(
-//             alignment: Alignment.bottomCenter,
-//             child: ClipRRect(
-//               borderRadius: const BorderRadius.vertical(
-//                 bottom: Radius.circular(20),
-//               ),
-//               child: Image.asset(
-//                 AssetsManager.radioSound,
-//                 width: double.infinity,
-//                 fit: BoxFit.fill,
-//               ),
-//             ),
-//           ),
-//           Column(
-//            // crossAxisAlignment: CrossAxisAlignment.center,
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               Text(
-//               model.name.toString(),
-//               style: AppStyles.bold20Black,
-//             ),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 IconButton(
-//                     onPressed: () {},
-//                     icon: Icon(
-//                       Icons.play_arrow_sharp,
-//                       size: 30,
-//                     )),
-//                 SizedBox(
-//                   width: 10,
-//                 ),
-//                 IconButton(
-//                     onPressed: () {},
-//                     icon: Icon(
-//                       Icons.stop_rounded,
-//                       size: 30,
-//                     )),
-//                 SizedBox(
-//                   width: 10,
-//                 ),
-//                 IconButton(
-//                     onPressed: () {},
-//                     icon: Icon(
-//                       CupertinoIcons.volume_up,
-//                       size: 30,
-//                     )),
-//                 SizedBox(
-//                   width: 10,
-//                 )
-//             ],
-//           )
-//         ],),
-//         ]
-//       ))
-//
-//     );
-//   }
-// }

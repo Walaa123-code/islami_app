@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+
 import '../../../utils/app_style.dart';
 
 class CustomWidgetOnboard extends StatelessWidget {
@@ -15,30 +16,27 @@ class CustomWidgetOnboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
           image,
-          height:
-              MediaQuery.of(context).size.height * 0.40, // 45% من الشاشة للصورة
+          height: height * 0.40,
           fit: BoxFit.contain,
         ),
-        const SizedBox(height: 40),
+        SizedBox(height: height * 0.03),
         Text(
           text,
           textAlign: TextAlign.center,
           style: AppStyles.bold24Primary,
         ),
-        const SizedBox(height: 30),
+        SizedBox(height: height * 0.02),
         if (description != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              description!,
-              textAlign: TextAlign.center,
-              style: AppStyles.bold20Primary,
-            ),
+          Text(
+            description!,
+            textAlign: TextAlign.center,
+            style: AppStyles.bold18Primary,
           ),
       ],
     );
