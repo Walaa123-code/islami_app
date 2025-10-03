@@ -108,23 +108,43 @@ class _HadithTabState extends State<HadithTab> {
     );
   }
 
+  // void loadHadithFile() async {
+  //   for (int i = 1; i <= 50; i++) {
+  //     String hadithContent =
+  //         await rootBundle.loadString("assets/files/hadith/h$i.txt");
+  //     List<String> hadithLines = hadithContent.split("\n");
+  //
+  //     String title = hadithLines[0]; // title
+  //     hadithLines.removeAt(0); // remove title
+  //
+  //     HadithModel hadithModel = HadithModel(
+  //       contentHadith: hadithLines,
+  //       title: title,
+  //     );
+  //
+  //     setState(() {
+  //       hadithList.add(hadithModel);
+  //     });
+  //   }
+  // }
   void loadHadithFile() async {
+    List<HadithModel> tempList = [];
     for (int i = 1; i <= 50; i++) {
       String hadithContent =
           await rootBundle.loadString("assets/files/hadith/h$i.txt");
       List<String> hadithLines = hadithContent.split("\n");
 
-      String title = hadithLines[0]; // title
-      hadithLines.removeAt(0); // remove title
+      String title = hadithLines[0];
+      hadithLines.removeAt(0);
 
-      HadithModel hadithModel = HadithModel(
+      tempList.add(HadithModel(
         contentHadith: hadithLines,
         title: title,
-      );
-
-      setState(() {
-        hadithList.add(hadithModel);
-      });
+      ));
     }
+
+    setState(() {
+      hadithList = tempList;
+    });
   }
 }

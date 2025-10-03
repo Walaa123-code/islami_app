@@ -39,6 +39,7 @@ class _QuranTabState extends State<QuranTab> {
   String searchText = '';
   List<SuraModel> filterList = SuraModel.suraList;
   Map<String, String> loadSuraList = {};
+  bool isLoading = true;
 
 /*
 suraList => 114
@@ -51,114 +52,124 @@ suraList => filter => searchText => filterList
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Stack(
-        children: [
-          Image.asset(
-            AssetsManager.quranBg,
-            height: double.infinity,
-            width: double.infinity,
-            fit: BoxFit.fill,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primaryDark,
+              ),
+            )
+          : Stack(
               children: [
-                // SizedBox(
-                //   height: height * 0.02,
-                // ),
-                Image.asset(AssetsManager.logo),
-                TextField(
-                  style: TextStyle(color: AppColors.whiteColor),
-                  cursorColor: AppColors.primaryDark,
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(
+                Image.asset(
+                  AssetsManager.quranBg,
+                  height: double.infinity,
+                  width: double.infinity,
+                  fit: BoxFit.fill,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Image.asset(AssetsManager.logo),
+                      TextField(
+                        style: TextStyle(color: AppColors.whiteColor),
+                        cursorColor: AppColors.primaryDark,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                              color: AppColors.primaryDark,
+                              width: 1.5,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                              color: AppColors.primaryDark,
+                              width: 1.5,
+                            ),
+                          ),
+                          prefixIcon: Image.asset(
+                            'assets/images/prefix_icon.png',
                             color: AppColors.primaryDark,
-                            width: 1.5,
-                          )),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(
-                          color: AppColors.primaryDark,
-                          width: 1.5,
+                          ),
+                          hintText: 'Sura Name',
+                          hintStyle: AppStyles.bold16White,
                         ),
+                        onChanged: (text) {
+                          searchText = text;
+                          filterList = SuraModel.suraList.where((suraModel) {
+                            return suraModel.suraArabicName
+                                    .contains(searchText) ||
+                                suraModel.suraEnglishName
+                                    .toLowerCase()
+                                    .contains(searchText.toLowerCase());
+                          }).toList();
+                          setState(() {});
+                        },
                       ),
-                      prefixIcon: Image.asset(
-                        'assets/images/prefix_icon.png',
-                        color: AppColors.primaryDark,
+                      SizedBox(height: height * 0.02),
+                      searchText.isNotEmpty
+                          ? SizedBox()
+                          : builtMostRecentlyWidget(),
+                      SizedBox(height: height * 0.02),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Suras List',
+                            style: AppStyles.bold16White,
+                            textAlign: TextAlign.left,
+                          ),
+                        ],
                       ),
-                      hintText: 'Sura Name',
-                      hintStyle: AppStyles.bold16White
-                      // const TextStyle(color: AppColors.whiteColor)
-                      ),
-                  onChanged: (text) {
-                    searchText = text;
-                    filterList = SuraModel.suraList.where((suraModel) {
-                      return suraModel.suraArabicName.contains(searchText) ||
-                          suraModel.suraEnglishName
-                              .toLowerCase()
-                              .contains(searchText.toLowerCase());
-                    }).toList();
-                    setState(() {});
-                  },
-                ),
-                SizedBox(height: height * 0.02),
-                searchText.isNotEmpty ? SizedBox() : builtMostRecentlyWidget(),
-                SizedBox(height: height * 0.02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Suras List',
-                      style: AppStyles.bold16White,
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
-                ),
-                SizedBox(height: height * 0.01),
-                Expanded(
-                  child: ListView.separated(
-                    separatorBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: height * 0.01, horizontal: width * 0.01),
-                        child: Divider(
-                          thickness: 1.5,
-                          endIndent: 30.5,
-                          indent: 30.5,
-                          color: AppColors.whiteColor,
-                        ),
-                      );
-                    },
-                    padding: EdgeInsets.zero,
-                    itemCount: filterList.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                          onTap: () {
-                            // save last sura
-                            saveLastSura(
-                                suraEnName: filterList[index].suraEnglishName,
-                                suraArName: filterList[index].suraArabicName,
-                                numOfVerses: filterList[index].numOfVerses);
-                            Navigator.of(context).pushNamed(
-                                SuraDetailsScreen.routeName,
-                                arguments: filterList[index]);
+                      SizedBox(height: height * 0.01),
+                      Expanded(
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: height * 0.01,
+                                  horizontal: width * 0.01),
+                              child: Divider(
+                                thickness: 1.5,
+                                endIndent: 30.5,
+                                indent: 30.5,
+                                color: AppColors.whiteColor,
+                              ),
+                            );
                           },
-                          child: SuraListWidget(
-                            suraModel: filterList[index],
-                            index: index,
-                          ));
-                    },
+                          padding: EdgeInsets.zero,
+                          itemCount: filterList.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                saveLastSura(
+                                    suraEnName:
+                                        filterList[index].suraEnglishName,
+                                    suraArName:
+                                        filterList[index].suraArabicName,
+                                    numOfVerses: filterList[index].numOfVerses);
+                                Navigator.of(context).pushNamed(
+                                  SuraDetailsScreen.routeName,
+                                  arguments: filterList[index],
+                                );
+                              },
+                              child: SuraListWidget(
+                                suraModel: filterList[index],
+                                index: index,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(height: height * 0.01),
+                    ],
                   ),
-                ),
-                SizedBox(height: height * 0.01),
+                )
               ],
             ),
-          )
-        ],
-      ),
     );
   }
 
@@ -178,7 +189,6 @@ suraList => filter => searchText => filterList
         SizedBox(height: 10),
         InkWell(
           onTap: () {
-            // إنشاء SuraModel من البيانات المخزنة
             SuraModel lastSura = SuraModel(
               fileName:
                   '${getSuraFileName(loadSuraList['suraEnName'] ?? '')}.txt',
@@ -258,8 +268,14 @@ suraList => filter => searchText => filterList
   }
 
 // get data from shared prefs
+//   loadLastSura() async {
+//     loadSuraList = await getLastSura();
+//     setState(() {});
+//   }
   loadLastSura() async {
     loadSuraList = await getLastSura();
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 }
